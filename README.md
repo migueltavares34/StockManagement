@@ -1,0 +1,12 @@
+This project is a POC for a very basic Stock Management API witch manages incoming user orders, stock replacement and orders fullfilment with comunication to user by email.
+
+To start this API:
+
+-import project to eclipse IDE using 
+  -JDK-17
+  -latest maven version for dependencies management
+  -SpringTools
+-configure application.properties file:
+  -SQL: host, username and password variables to your mail server account
+  -SQL: url, username and password to your postgres server
+Run project as Spring Boot App
