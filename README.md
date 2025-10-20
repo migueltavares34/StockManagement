@@ -2,11 +2,14 @@ This project is a POC for a very basic Stock Management API witch manages incomi
 
 To start this API:
 
--import project to eclipse IDE using 
-  -JDK-17
-  -latest maven version for dependencies management
-  -SpringTools
--configure application.properties file:
-  -SQL: host, username and password variables to your mail server account
-  -SQL: url, username and password to your postgres server
+Import project to eclipse IDE using 
+
+    JDK-17
+    latest maven version for dependencies management
+	SpringTools
+Configure application.properties file:
+
+	SQL: host, username and password variables to your mail server account
+	SQL: url, username and password to your postgres server
+	
 Run project as Spring Boot App
