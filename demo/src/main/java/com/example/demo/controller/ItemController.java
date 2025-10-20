@@ -16,6 +16,9 @@ import com.example.demo.model.BaseEntity;
 import com.example.demo.model.Item;
 import com.example.demo.utils.ManageLogs;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Items management")
 @RestController
 @RequestMapping("/stockaccess/item")
 public class ItemController {
@@ -25,6 +28,7 @@ public class ItemController {
 	@Autowired
 	ItemBusiness business;
 
+	@Tag(name = "Create item")
 	@GetMapping("/create")
 	public ResponseEntity<String> create(@RequestParam String name) {
 		Item item = Item.builder().build();
@@ -37,6 +41,7 @@ public class ItemController {
 		return handleResult(item,"Item created");
 	}
 
+	@Tag(name = "Find item")
 	@GetMapping("/find")
 	public ResponseEntity<String> find(@RequestParam long id) {
 		Item item = Item.builder().build();
@@ -48,7 +53,8 @@ public class ItemController {
 
 		return handleResult(item,"Item found");
 	}
-	
+
+	@Tag(name = "Change item")
 	@GetMapping("/change")
 	public ResponseEntity<String> change(@RequestParam long id, @RequestParam String name) {
 		Item item = Item.builder().build();
@@ -60,7 +66,8 @@ public class ItemController {
 
 		return handleResult(item,"Item name changed");
 	}		
-	
+
+	@Tag(name = "Remove item")
 	@GetMapping("/delete")
 	public ResponseEntity<String> delete(@RequestParam long id) {
 		Item item = Item.builder().build();

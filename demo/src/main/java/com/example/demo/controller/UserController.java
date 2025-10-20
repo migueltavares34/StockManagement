@@ -16,6 +16,10 @@ import com.example.demo.model.BaseEntity;
 import com.example.demo.model.User;
 import com.example.demo.utils.ManageLogs;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
+@Tag(name = "Users management")
 @RestController
 @RequestMapping("/stockaccess/user")
 public class UserController {
@@ -25,6 +29,7 @@ public class UserController {
 	@Autowired
 	UserBusiness business;
 
+	@Tag(name = "Create user")
 	@GetMapping("/create")
 	public ResponseEntity<String> create(@RequestParam String name, @RequestParam String email) {
 		User user = User.builder().build();
@@ -37,6 +42,8 @@ public class UserController {
 		return handleResult(user,"User created");
 	}
 
+
+	@Tag(name = "Find user")
 	@GetMapping("/find")
 	public ResponseEntity<String> find(@RequestParam long id) {
 		User user = User.builder().build();
@@ -48,7 +55,8 @@ public class UserController {
 
 		return handleResult(user,"User found");
 	}
-	
+
+	@Tag(name = "Change user")
 	@GetMapping("/change")
 	public ResponseEntity<String> change(@RequestParam long id, @RequestParam String email) {
 		User user = User.builder().build();
@@ -60,7 +68,8 @@ public class UserController {
 
 		return handleResult(user,"User email changed");
 	}
-	
+
+	@Tag(name = "Remove user")
 	@GetMapping("/delete")
 	public ResponseEntity<String> delete(@RequestParam long id) {
 		User user = User.builder().build();

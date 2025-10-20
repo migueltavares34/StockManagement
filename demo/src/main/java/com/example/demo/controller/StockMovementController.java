@@ -17,6 +17,10 @@ import com.example.demo.model.BaseEntity;
 import com.example.demo.model.StockMovement;
 import com.example.demo.utils.ManageLogs;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
+@Tag(name = "Stock movements management")
 @RestController
 @RequestMapping("/stockaccess/stockmovement")
 public class StockMovementController {
@@ -26,6 +30,7 @@ public class StockMovementController {
 	@Autowired
 	StockMovementBusiness business;
 
+	@Tag(name = "Create stock movement")
 	@GetMapping("/create")
 	public ResponseEntity<String> create(@RequestParam Long itemId, @RequestParam Long quantity) {
 		StockMovement stockMovement = StockMovement.builder().build();		
@@ -38,6 +43,7 @@ public class StockMovementController {
 		return handleResult(stockMovement, "StockMovement created");
 	}
 
+	@Tag(name = "Add item quantity to existing stock movement or create new")
 	@GetMapping("/add")
 	public ResponseEntity<String> add(@RequestParam Long itemId, @RequestParam Long quantity) {
 
@@ -51,6 +57,7 @@ public class StockMovementController {
 		return handleResult(stockMovement, "StockMovement created");
 	}
 
+	@Tag(name = "Find stock movement")
 	@GetMapping("/find")
 	public ResponseEntity<String> find(@RequestParam long id) {
 		StockMovement stockMovement = StockMovement.builder().build();
@@ -63,6 +70,7 @@ public class StockMovementController {
 		return handleResult(stockMovement, "StockMovement found");
 	}
 
+	@Tag(name = "Change stock movement")
 	@GetMapping("/change")
 	public ResponseEntity<String> change(@RequestParam long id, @RequestParam long quantity) {
 		StockMovement stockMovement = StockMovement.builder().build();
@@ -75,6 +83,7 @@ public class StockMovementController {
 		return handleResult(stockMovement, "StockMovement quantity changed");
 	}
 
+	@Tag(name = "Remove stock movement")
 	@GetMapping("/delete")
 	public ResponseEntity<String> delete(@RequestParam long id) {
 		StockMovement stockMovement = StockMovement.builder().build();

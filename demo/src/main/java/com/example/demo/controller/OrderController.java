@@ -15,6 +15,10 @@ import com.example.demo.business.OrderBusiness;
 import com.example.demo.model.BaseEntity;
 import com.example.demo.model.Order;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
+@Tag(name = "Orders management")
 @RestController
 @RequestMapping("/stockaccess/order")
 public class OrderController {
@@ -24,6 +28,7 @@ public class OrderController {
 	@Autowired
 	OrderBusiness business;
 
+	@Tag(name = "Create order")
 	@GetMapping("/create")
 	public ResponseEntity<String> create(@RequestParam Long userId, Long itemId, Long quantity) {
 		Order order = Order.builder().build();
@@ -36,6 +41,7 @@ public class OrderController {
 		return handleResult(order, "Order created");
 	}
 
+	@Tag(name = "Find order")
 	@GetMapping("/find")
 	public ResponseEntity<String> find(@RequestParam long id) {
 		Order order = Order.builder().build();
@@ -48,6 +54,7 @@ public class OrderController {
 		return handleResult(order, "Order found");
 	}
 
+	@Tag(name = "Change order")
 	@GetMapping("/change")
 	public ResponseEntity<String> change(@RequestParam long id, @RequestParam long quantity) {
 		Order order = Order.builder().build();
@@ -60,6 +67,7 @@ public class OrderController {
 		return handleResult(order, "Order quantity changed");
 	}
 
+	@Tag(name = "Remove order")
 	@GetMapping("/delete")
 	public ResponseEntity<String> delete(@RequestParam long id) {
 		Order order = Order.builder().build();
