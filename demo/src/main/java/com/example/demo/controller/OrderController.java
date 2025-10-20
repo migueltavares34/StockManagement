@@ -17,8 +17,7 @@ import com.example.demo.model.Order;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-
-@Tag(name = "Orders management")
+@Tag(name = "OrderController", description = "Orders management")
 @RestController
 @RequestMapping("/stockaccess/order")
 public class OrderController {
@@ -28,7 +27,7 @@ public class OrderController {
 	@Autowired
 	OrderBusiness business;
 
-	@Tag(name = "Create order")
+	@Tag(name = "Create order", description = "Create order and if there is enugh stock of the item it will be closed immediately and stock movement's will be adjusted or removed if empty")
 	@GetMapping("/create")
 	public ResponseEntity<String> create(@RequestParam Long userId, Long itemId, Long quantity) {
 		Order order = Order.builder().build();

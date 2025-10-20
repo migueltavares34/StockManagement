@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,13 +18,12 @@ import com.example.demo.utils.ManageLogs;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-
-@Tag(name = "Stock movements management")
+@Tag(name = "StockMovements", description = "Stock movements management")
 @RestController
 @RequestMapping("/stockaccess/stockmovement")
 public class StockMovementController {
 
-    private static final Logger logger = ManageLogs.getLogger();
+	private static final Logger logger = ManageLogs.getLogger();
 
 	@Autowired
 	StockMovementBusiness business;
@@ -33,7 +31,7 @@ public class StockMovementController {
 	@Tag(name = "Create stock movement")
 	@GetMapping("/create")
 	public ResponseEntity<String> create(@RequestParam Long itemId, @RequestParam Long quantity) {
-		StockMovement stockMovement = StockMovement.builder().build();		
+		StockMovement stockMovement = StockMovement.builder().build();
 		try {
 			stockMovement = business.create(itemId, quantity);
 		} catch (Exception e) {
@@ -43,7 +41,7 @@ public class StockMovementController {
 		return handleResult(stockMovement, "StockMovement created");
 	}
 
-	@Tag(name = "Add item quantity to existing stock movement or create new")
+	@Tag(name = "Add stock Movement", description = "Checks if there are orders that can be fullfiled and if there is remaining quantity it will add to existing stock movement or create new one")
 	@GetMapping("/add")
 	public ResponseEntity<String> add(@RequestParam Long itemId, @RequestParam Long quantity) {
 

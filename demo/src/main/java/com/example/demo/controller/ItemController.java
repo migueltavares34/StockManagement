@@ -18,13 +18,13 @@ import com.example.demo.utils.ManageLogs;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Items management")
+@Tag(name = "ItemController", description = "Items management")
 @RestController
 @RequestMapping("/stockaccess/item")
 public class ItemController {
 
-    private static final Logger logger = ManageLogs.getLogger();
-	
+	private static final Logger logger = ManageLogs.getLogger();
+
 	@Autowired
 	ItemBusiness business;
 
@@ -38,7 +38,7 @@ public class ItemController {
 			item.setErrorMessage(e.getMessage());
 		}
 
-		return handleResult(item,"Item created");
+		return handleResult(item, "Item created");
 	}
 
 	@Tag(name = "Find item")
@@ -51,7 +51,7 @@ public class ItemController {
 			item.setErrorMessage(e.getMessage());
 		}
 
-		return handleResult(item,"Item found");
+		return handleResult(item, "Item found");
 	}
 
 	@Tag(name = "Change item")
@@ -62,10 +62,10 @@ public class ItemController {
 			item = business.change(id, name);
 		} catch (Exception e) {
 			item.setErrorMessage(e.getMessage());
-		}		
+		}
 
-		return handleResult(item,"Item name changed");
-	}		
+		return handleResult(item, "Item name changed");
+	}
 
 	@Tag(name = "Remove item")
 	@GetMapping("/delete")
@@ -76,7 +76,7 @@ public class ItemController {
 		} catch (Exception e) {
 			item.setErrorMessage(e.getMessage());
 		}
-		return handleResult(item,"Item deleted");
+		return handleResult(item, "Item deleted");
 	}
 
 	private ResponseEntity<String> handleResult(BaseEntity entity, String successMessage) {

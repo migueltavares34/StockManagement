@@ -18,14 +18,13 @@ import com.example.demo.utils.ManageLogs;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-
-@Tag(name = "Users management")
+@Tag(name = "UserController", description = "Users management")
 @RestController
 @RequestMapping("/stockaccess/user")
 public class UserController {
 
-    private static final Logger logger = ManageLogs.getLogger();
-	
+	private static final Logger logger = ManageLogs.getLogger();
+
 	@Autowired
 	UserBusiness business;
 
@@ -39,9 +38,8 @@ public class UserController {
 			user.setErrorMessage(e.getMessage());
 		}
 
-		return handleResult(user,"User created");
+		return handleResult(user, "User created");
 	}
-
 
 	@Tag(name = "Find user")
 	@GetMapping("/find")
@@ -53,7 +51,7 @@ public class UserController {
 			user.setErrorMessage(e.getMessage());
 		}
 
-		return handleResult(user,"User found");
+		return handleResult(user, "User found");
 	}
 
 	@Tag(name = "Change user")
@@ -64,9 +62,9 @@ public class UserController {
 			user = business.change(id, email);
 		} catch (Exception e) {
 			user.setErrorMessage(e.getMessage());
-		}		
+		}
 
-		return handleResult(user,"User email changed");
+		return handleResult(user, "User email changed");
 	}
 
 	@Tag(name = "Remove user")
@@ -78,7 +76,7 @@ public class UserController {
 		} catch (Exception e) {
 			user.setErrorMessage(e.getMessage());
 		}
-		return handleResult(user,"User deleted");
+		return handleResult(user, "User deleted");
 	}
 
 	private ResponseEntity<String> handleResult(BaseEntity entity, String successMessage) {
