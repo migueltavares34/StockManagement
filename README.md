@@ -13,3 +13,7 @@ Configure application.properties file:
 	SQL: url, username and password to your postgres server
 	
 Run project as Spring Boot App
+
+Endpoints routing
+
+API swagger can be found follwing this uri with application running: http://localhost:8080/swagger-ui/index.html
