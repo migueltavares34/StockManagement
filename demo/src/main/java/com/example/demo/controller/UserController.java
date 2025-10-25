@@ -6,7 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +32,7 @@ public class UserController {
 	UserBusiness business;
 
 	@Tag(name = "Create user")
-	@GetMapping("/create")
+	@PostMapping("/create")
 	public ResponseEntity<String> create(@RequestParam String name, @RequestParam String email) {
 		User user = User.builder().build();
 		try {
@@ -55,7 +58,7 @@ public class UserController {
 	}
 
 	@Tag(name = "Change user")
-	@GetMapping("/change")
+	@PutMapping("/change")
 	public ResponseEntity<String> change(@RequestParam long id, @RequestParam String email) {
 		User user = User.builder().build();
 		try {
@@ -68,7 +71,7 @@ public class UserController {
 	}
 
 	@Tag(name = "Remove user")
-	@GetMapping("/delete")
+	@DeleteMapping("/delete")
 	public ResponseEntity<String> delete(@RequestParam long id) {
 		User user = User.builder().build();
 		try {

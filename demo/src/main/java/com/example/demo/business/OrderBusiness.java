@@ -31,12 +31,18 @@ public class OrderBusiness {
 	StockMovementBusiness stockMovementBusiness;
 
 	@Autowired
+	ItemBusiness itemBusiness;
+
+	@Autowired
+	UserBusiness userBusiness;
+
+	@Autowired
 	EmailService emailService;
 
 	public Order create(Long userId, Long itemId, Long quantity) {
 
-		User user = User.builder().id(userId).build();
-		Item item = Item.builder().id(itemId).build();
+		User user = userBusiness.find(userId);
+		Item item =itemBusiness.find(itemId);
 		Order order = Order.builder().user(user).item(item).quantity(quantity).creationDate(new Date()).build();
 
 		if (stockMovementBusiness.orderCanBefulfilled(order)) {
