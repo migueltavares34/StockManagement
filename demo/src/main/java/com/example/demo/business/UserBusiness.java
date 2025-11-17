@@ -1,20 +1,20 @@
 package com.example.demo.business;
 
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.UserDao;
-import com.example.demo.utils.ManageLogs;
 
 
 @Component
 public class UserBusiness {
 
-    private static final Logger logger = ManageLogs.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(UserBusiness.class);
     
 	@Autowired
 	UserDao dao;

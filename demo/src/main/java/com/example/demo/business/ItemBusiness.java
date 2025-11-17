@@ -1,18 +1,17 @@
 package com.example.demo.business;
 
-import java.util.logging.Logger;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.model.Item;
 import com.example.demo.repository.ItemDao;
-import com.example.demo.utils.ManageLogs;
 
 @Component
 public class ItemBusiness {
 
-    private static final Logger logger = ManageLogs.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(ItemBusiness.class);
     
 	@Autowired
 	ItemDao dao;

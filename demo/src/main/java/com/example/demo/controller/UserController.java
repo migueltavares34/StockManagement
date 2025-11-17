@@ -1,10 +1,7 @@
 package com.example.demo.controller;
 
-import java.util.logging.Logger;
-
-import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.business.UserBusiness;
-import com.example.demo.model.BaseEntity;
 import com.example.demo.model.User;
-import com.example.demo.utils.ManageLogs;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "UserController", description = "Users management")
 @RestController
 @RequestMapping("/stockaccess/user")
-public class UserController {
+public class UserController extends BaseController {
 
-	private static final Logger logger = ManageLogs.getLogger();
+	UserController() {
+		logger = LoggerFactory.getLogger(UserController.class);
+	}
 
 	@Autowired
 	UserBusiness business;
@@ -80,20 +77,5 @@ public class UserController {
 			user.setErrorMessage(e.getMessage());
 		}
 		return handleResult(user, "User deleted");
-	}
-
-	private ResponseEntity<String> handleResult(BaseEntity entity, String successMessage) {
-
-		if (entity == null) {
-			logger.info("Entity is null");
-			return new ResponseEntity<String>("Order not found", HttpStatus.BAD_REQUEST);
-
-		} else if (StringUtils.isNotBlank(entity.getErrorMessage())) {
-			logger.info(entity.getErrorMessage());
-			return new ResponseEntity<String>(entity.getErrorMessage(), HttpStatus.BAD_REQUEST);
-		}
-		successMessage = successMessage + ": " + entity.toString();
-		logger.info(successMessage);
-		return new ResponseEntity<String>(successMessage, HttpStatus.CREATED);
 	}
 }

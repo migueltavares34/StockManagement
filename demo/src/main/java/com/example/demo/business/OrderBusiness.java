@@ -2,8 +2,9 @@ package com.example.demo.business;
 
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,12 +15,11 @@ import com.example.demo.model.User;
 import com.example.demo.repository.OrderDao;
 import com.example.demo.repository.OrderRepositoryInterface;
 import com.example.demo.utils.EmailService;
-import com.example.demo.utils.ManageLogs;
 
 @Component
 public class OrderBusiness {
 
-	private static final Logger logger = ManageLogs.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(OrderBusiness.class);
 
 	@Autowired
 	OrderDao dao;
@@ -113,5 +113,4 @@ public class OrderBusiness {
 		emailService.sendEmail(order.getUser().getEmail(), "Order completed",
 				"Your order for " + order.getQuantity() + " " + order.getItem().getName() + " is completed.");
 	}
-
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -13,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @NoArgsConstructor
 public class StockMovement extends BaseEntity {
@@ -30,6 +32,6 @@ public class StockMovement extends BaseEntity {
 	}
 
 	public void subtractItems(Long quantity) {
-		this.quantity -= quantity;		
+		this.quantity -= quantity;
 	}
 }

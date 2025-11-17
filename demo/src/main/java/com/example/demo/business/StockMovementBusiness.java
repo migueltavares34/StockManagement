@@ -1,8 +1,9 @@
 package com.example.demo.business;
 
 import java.util.Date;
-import java.util.logging.Logger;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,12 +13,11 @@ import com.example.demo.model.Order;
 import com.example.demo.model.StockMovement;
 import com.example.demo.repository.StockMovementDao;
 import com.example.demo.repository.StockMovementRepositoryInterface;
-import com.example.demo.utils.ManageLogs;
 
 @Component
 public class StockMovementBusiness {
 
-	private static final Logger logger = ManageLogs.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(StockMovementBusiness.class);
 
 	@Autowired
 	StockMovementDao dao;

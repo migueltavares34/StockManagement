@@ -1,11 +1,7 @@
 package com.example.demo.controller;
 
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.business.StockMovementBusiness;
-import com.example.demo.model.BaseEntity;
 import com.example.demo.model.StockMovement;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,9 +19,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "StockMovements", description = "Stock movements management")
 @RestController
 @RequestMapping("/stockaccess/stockmovement")
-public class StockMovementController {
+public class StockMovementController extends BaseController {
 
-	private static final Logger logger = LogManager.getLogger(StockMovementController.class);
+	StockMovementController() {
+		logger = LoggerFactory.getLogger(StockMovementController.class);
+	}
 
 	@Autowired
 	StockMovementBusiness business;
@@ -94,20 +91,5 @@ public class StockMovementController {
 			stockMovement.setErrorMessage(e.getMessage());
 		}
 		return handleResult(stockMovement, "StockMovement deleted");
-	}
-
-	private ResponseEntity<String> handleResult(BaseEntity entity, String successMessage) {
-
-		if (entity == null) {
-			logger.info("Entity is null");
-			return new ResponseEntity<String>("Order not found", HttpStatus.BAD_REQUEST);
-
-		} else if (StringUtils.isNotBlank(entity.getErrorMessage())) {
-			logger.info(entity.getErrorMessage());
-			return new ResponseEntity<String>(entity.getErrorMessage(), HttpStatus.BAD_REQUEST);
-		}
-		successMessage = successMessage + ": " + entity.toString();
-		logger.info(successMessage);
-		return new ResponseEntity<String>(successMessage, HttpStatus.CREATED);
 	}
 }
