@@ -2,20 +2,17 @@ package com.example.demo.business;
 
 import java.util.regex.Pattern;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.UserDao;
 
+@Service
+@Qualifier("userBusiness")
+public class UserBusiness extends BaseBusiness {
 
-@Component
-public class UserBusiness {
-
-    private static final Logger logger = LoggerFactory.getLogger(UserBusiness.class);
-    
 	@Autowired
 	UserDao dao;
 
@@ -32,11 +29,6 @@ public class UserBusiness {
 		return appUser;
 	}
 
-	public User find(long userId) {
-		User appUser= User.builder().id(userId).build();
-		return dao.find(appUser);
-	}
-	
 	public User change(long userId, String email) {
 		User appUser;
 		if (!isValidEmailAddress(email)) {
@@ -49,16 +41,6 @@ public class UserBusiness {
 		appUser = dao.change(appUser);
 		return appUser;
 	}
-
-	public User delete(long userId) {
-		User appUser;
-
-		appUser = User.builder().id(userId).build();
-		appUser = dao.delete(appUser);
-		return appUser;
-	}
-	
-
 
 	// Method to check if the email is valid
 	public static boolean isValidEmailAddress(String email) {

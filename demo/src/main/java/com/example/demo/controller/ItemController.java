@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.business.ItemBusiness;
 import com.example.demo.model.Item;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,63 +16,29 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "ItemController", description = "Items management")
 @RestController
 @RequestMapping("/stockaccess/item")
-public class ItemController extends BaseController{
-	
-	ItemController(){
-		logger = LoggerFactory.getLogger(ItemController.class);
-	}
-
-	@Autowired
-	ItemBusiness business;
+public class ItemController extends BaseController {
 
 	@Tag(name = "Create item")
 	@PostMapping("/create")
 	public ResponseEntity<String> create(@RequestParam String name) {
-		Item item = Item.builder().build();
-		try {
-			item = business.create(name);
-		} catch (Exception e) {
-			item.setErrorMessage(e.getMessage());
-		}
-
-		return handleResult(item, "Item created");
+		return create(Item.builder().name(name).build());
 	}
 
 	@Tag(name = "Find item")
 	@GetMapping("/find")
 	public ResponseEntity<String> find(@RequestParam long id) {
-		Item item = Item.builder().build();
-		try {
-			item = business.find(id);
-		} catch (Exception e) {
-			item.setErrorMessage(e.getMessage());
-		}
-
-		return handleResult(item, "Item found");
+		return find(Item.builder().id(id).build());
 	}
 
 	@Tag(name = "Change item")
 	@PutMapping("/change")
 	public ResponseEntity<String> change(@RequestParam long id, @RequestParam String name) {
-		Item item = Item.builder().build();
-		try {
-			item = business.change(id, name);
-		} catch (Exception e) {
-			item.setErrorMessage(e.getMessage());
-		}
-
-		return handleResult(item, "Item name changed");
+		return change(Item.builder().id(id).name(name).build());
 	}
 
 	@Tag(name = "Remove item")
 	@DeleteMapping("/delete")
 	public ResponseEntity<String> delete(@RequestParam long id) {
-		Item item = Item.builder().build();
-		try {
-			item = business.delete(id);
-		} catch (Exception e) {
-			item.setErrorMessage(e.getMessage());
-		}
-		return handleResult(item, "Item deleted");
+		return delete(Item.builder().id(id).build());
 	}
 }

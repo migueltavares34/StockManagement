@@ -5,7 +5,8 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.Item;
@@ -14,8 +15,10 @@ import com.example.demo.model.StockMovement;
 import com.example.demo.repository.StockMovementDao;
 import com.example.demo.repository.StockMovementRepositoryInterface;
 
-@Component
-public class StockMovementBusiness {
+
+@Service
+@Qualifier("stockMovementBusiness")
+public class StockMovementBusiness extends BaseBusiness {
 
     private static final Logger logger = LoggerFactory.getLogger(StockMovementBusiness.class);
 
@@ -59,23 +62,6 @@ public class StockMovementBusiness {
 
 		stockMovement = orderBusiness.checkAndCloseOrders(stockMovement);
 		return stockMovement.getQuantity() == 0 ? dao.delete(stockMovement) : dao.change(stockMovement);
-	}
-
-	public StockMovement find(long Id) {
-		StockMovement stockMovement = StockMovement.builder().id(Id).build();
-		return dao.find(stockMovement);
-	}
-
-	public StockMovement change(long Id, long quantity) {
-		return change(StockMovement.builder().id(Id).quantity(quantity).build());
-	}
-
-	public StockMovement change(StockMovement stockMovement) {
-		stockMovement = dao.change(stockMovement);
-
-		logger.info(this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName()
-				+ " stockMovement changed: " + stockMovement);
-		return stockMovement;
 	}
 
 	public StockMovement delete(long id) {

@@ -44,14 +44,7 @@ public class UserController extends BaseController {
 	@Tag(name = "Find user")
 	@GetMapping("/find")
 	public ResponseEntity<String> find(@RequestParam long id) {
-		User user = User.builder().build();
-		try {
-			user = business.find(id);
-		} catch (Exception e) {
-			user.setErrorMessage(e.getMessage());
-		}
-
-		return handleResult(user, "User found");
+		return find(User.builder().id(id).build());
 	}
 
 	@Tag(name = "Change user")
@@ -70,12 +63,6 @@ public class UserController extends BaseController {
 	@Tag(name = "Remove user")
 	@DeleteMapping("/delete")
 	public ResponseEntity<String> delete(@RequestParam long id) {
-		User user = User.builder().build();
-		try {
-			user = business.delete(id);
-		} catch (Exception e) {
-			user.setErrorMessage(e.getMessage());
-		}
-		return handleResult(user, "User deleted");
+		return delete(User.builder().id(id).build());
 	}
 }

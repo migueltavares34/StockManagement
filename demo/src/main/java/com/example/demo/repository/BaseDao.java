@@ -16,10 +16,26 @@ public class BaseDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public Object presistEntity(BaseEntity entity) {
+	public BaseEntity create(BaseEntity entity) {
+		return presistEntity(entity);
+	}
+
+	public BaseEntity find(BaseEntity entity) {
+		return findEntity(entity);
+	}
+
+	public BaseEntity delete(BaseEntity entity) {
+		return deleteEntity(findEntity(entity));
+	}
+
+	public BaseEntity change(BaseEntity entity) {
+		return changeEntity(entity);
+	}
+
+	public BaseEntity presistEntity(BaseEntity entity) {
 
 		try {
-			Consumer<EntityManager> consumer = em -> em. persist(entity);
+			Consumer<EntityManager> consumer = em -> em.persist(entity);
 			sessionFactory.inTransactionConsumer(consumer);
 
 		} catch (Exception e) {
@@ -41,7 +57,7 @@ public class BaseDao {
 		return returnedEntity;
 	}
 
-	public Object changeEntity(BaseEntity entity) {
+	public BaseEntity changeEntity(BaseEntity entity) {
 		try {
 			Function<EntityManager, BaseEntity> changeEntity = em -> em.merge(entity);
 			return sessionFactory.inTransactionFunction(changeEntity);

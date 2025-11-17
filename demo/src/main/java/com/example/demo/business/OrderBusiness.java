@@ -6,8 +6,10 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
+import com.example.demo.model.BaseEntity;
 import com.example.demo.model.Item;
 import com.example.demo.model.Order;
 import com.example.demo.model.StockMovement;
@@ -16,8 +18,9 @@ import com.example.demo.repository.OrderDao;
 import com.example.demo.repository.OrderRepositoryInterface;
 import com.example.demo.utils.EmailService;
 
-@Component
-public class OrderBusiness {
+@Service
+@Qualifier("orderBusiness")
+public class OrderBusiness extends BaseBusiness {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderBusiness.class);
 
@@ -39,10 +42,10 @@ public class OrderBusiness {
 	@Autowired
 	EmailService emailService;
 
-	public Order create(Long userId, Long itemId, Long quantity) {
+	public BaseEntity create(Long userId, Long itemId, Long quantity) {
 
-		User user = userBusiness.find(userId);
-		Item item =itemBusiness.find(itemId);
+		User user = (User) userBusiness.find(Item.builder().id(userId).build());
+		Item item = (Item) itemBusiness.find(Item.builder().id(itemId).build());
 		Order order = Order.builder().user(user).item(item).quantity(quantity).creationDate(new Date()).build();
 
 		if (stockMovementBusiness.orderCanBefulfilled(order)) {
@@ -58,30 +61,6 @@ public class OrderBusiness {
 		logger.info(this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName()
 				+ " order was created: " + order);
 		return dao.create(order);
-	}
-
-	public Order find(long Id) {
-		Order order = Order.builder().id(Id).build();
-		return dao.find(order);
-	}
-
-	public Order change(long Id, long quantity) {
-		Order order;
-
-		order = Order.builder().id(Id).quantity(quantity).build();
-		order = dao.change(order);
-
-		logger.info(this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName()
-				+ " order was changed: " + order);
-		return order;
-	}
-
-	public Order delete(long id) {
-		return delete(Order.builder().id(id).build());
-	}
-
-	public Order delete(Order order) {
-		return dao.delete(order);
 	}
 
 	public StockMovement checkAndCloseOrders(StockMovement stockMovement) {

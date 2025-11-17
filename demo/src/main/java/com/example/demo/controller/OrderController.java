@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,10 +20,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/stockaccess/order")
 public class OrderController  extends BaseController{
 	
-	OrderController(){
-		logger = LoggerFactory.getLogger(OrderController.class);
-	}
-
 	@Autowired
 	OrderBusiness business;
 
@@ -33,7 +28,7 @@ public class OrderController  extends BaseController{
 	public ResponseEntity<String> create(@RequestParam Long userId, Long itemId, Long quantity) {
 		Order order = Order.builder().build();
 		try {
-			order = business.create(userId, itemId, quantity);
+			order = (Order) business.create(userId, itemId, quantity);
 		} catch (Exception e) {
 			order.setErrorMessage(e.getMessage());
 		}
@@ -44,38 +39,18 @@ public class OrderController  extends BaseController{
 	@Tag(name = "Find order")
 	@GetMapping("/find")
 	public ResponseEntity<String> find(@RequestParam long id) {
-		Order order = Order.builder().build();
-		try {
-			order = business.find(id);
-		} catch (Exception e) {
-			order.setErrorMessage(e.getMessage());
-		}
-
-		return handleResult(order, "Order found");
+		return find(Order.builder().id(id).build());
 	}
 
 	@Tag(name = "Change order")
 	@PutMapping("/change")
 	public ResponseEntity<String> change(@RequestParam long id, @RequestParam long quantity) {
-		Order order = Order.builder().build();
-		try {
-			order = business.change(id, quantity);
-		} catch (Exception e) {
-			order.setErrorMessage(e.getMessage());
-		}
-
-		return handleResult(order, "Order quantity changed");
+		return change(Order.builder().id(id).quantity(quantity).build());
 	}
 
 	@Tag(name = "Remove order")
 	@DeleteMapping("/delete")
 	public ResponseEntity<String> delete(@RequestParam long id) {
-		Order order = Order.builder().build();
-		try {
-			order = business.delete(id);
-		} catch (Exception e) {
-			order.setErrorMessage(e.getMessage());
-		}
-		return handleResult(order, "Order deleted");
+		return delete(Order.builder().id(id).build());
 	}
 }

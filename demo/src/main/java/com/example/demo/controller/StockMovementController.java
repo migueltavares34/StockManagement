@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,10 +19,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/stockaccess/stockmovement")
 public class StockMovementController extends BaseController {
-
-	StockMovementController() {
-		logger = LoggerFactory.getLogger(StockMovementController.class);
-	}
 
 	@Autowired
 	StockMovementBusiness business;
@@ -58,38 +53,18 @@ public class StockMovementController extends BaseController {
 	@Tag(name = "Find stock movement")
 	@GetMapping("/find")
 	public ResponseEntity<String> find(@RequestParam long id) {
-		StockMovement stockMovement = StockMovement.builder().build();
-		try {
-			stockMovement = business.find(id);
-		} catch (Exception e) {
-			stockMovement.setErrorMessage(e.getMessage());
-		}
-
-		return handleResult(stockMovement, "StockMovement found");
+		return find(StockMovement.builder().id(id).build());
 	}
 
 	@Tag(name = "Change stock movement")
 	@PutMapping("/change")
 	public ResponseEntity<String> change(@RequestParam long id, @RequestParam long quantity) {
-		StockMovement stockMovement = StockMovement.builder().build();
-		try {
-			stockMovement = business.change(id, quantity);
-		} catch (Exception e) {
-			stockMovement.setErrorMessage(e.getMessage());
-		}
-
-		return handleResult(stockMovement, "StockMovement quantity changed");
+		return change(StockMovement.builder().id(id).quantity(quantity).build());
 	}
 
 	@Tag(name = "Remove stock movement")
 	@DeleteMapping("/delete")
 	public ResponseEntity<String> delete(@RequestParam long id) {
-		StockMovement stockMovement = StockMovement.builder().build();
-		try {
-			stockMovement = business.delete(id);
-		} catch (Exception e) {
-			stockMovement.setErrorMessage(e.getMessage());
-		}
-		return handleResult(stockMovement, "StockMovement deleted");
+		return delete(StockMovement.builder().id(id).build());
 	}
 }
