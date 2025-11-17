@@ -3,8 +3,6 @@ package com.example.demo.business;
 import java.util.Date;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,11 +16,12 @@ import com.example.demo.repository.OrderDao;
 import com.example.demo.repository.OrderRepositoryInterface;
 import com.example.demo.utils.EmailService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Qualifier("orderBusiness")
+@Slf4j
 public class OrderBusiness extends BaseBusiness {
-
-    private static final Logger logger = LoggerFactory.getLogger(OrderBusiness.class);
 
 	@Autowired
 	OrderDao dao;
@@ -50,16 +49,14 @@ public class OrderBusiness extends BaseBusiness {
 
 		if (stockMovementBusiness.orderCanBefulfilled(order)) {
 
-			logger.info(this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName()
-					+ " order is fullfilled: " + order);
+			log.info(" order is fullfilled: " + order);
 
 			sendEmail(order);
 			order.setQuantity(0L);
 			return order;
 		}
 
-		logger.info(this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName()
-				+ " order was created: " + order);
+		log.info(" order was created: " + order);
 		return dao.create(order);
 	}
 
@@ -84,8 +81,7 @@ public class OrderBusiness extends BaseBusiness {
 	private void closeOrder(Order order) {
 		sendEmail(order);
 		delete(order);
-		logger.info(this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName()
-				+ " order is fullfilled: " + order);
+		log.info(" order is fullfilled: " + order);
 	}
 
 	private void sendEmail(Order order) {

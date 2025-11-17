@@ -8,7 +8,6 @@ import com.example.demo.model.User;
 @Repository
 public class UserDao extends BaseDao {
 
-
 	public User create(User appUser) {
 		return (User) presistEntity(appUser);
 	}

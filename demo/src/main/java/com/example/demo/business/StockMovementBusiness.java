@@ -2,8 +2,6 @@ package com.example.demo.business;
 
 import java.util.Date;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -15,12 +13,13 @@ import com.example.demo.model.StockMovement;
 import com.example.demo.repository.StockMovementDao;
 import com.example.demo.repository.StockMovementRepositoryInterface;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 @Service
 @Qualifier("stockMovementBusiness")
+@Slf4j
 public class StockMovementBusiness extends BaseBusiness {
-
-    private static final Logger logger = LoggerFactory.getLogger(StockMovementBusiness.class);
 
 	@Autowired
 	StockMovementDao dao;
@@ -37,8 +36,7 @@ public class StockMovementBusiness extends BaseBusiness {
 				.build();
 		stockMovement = dao.create(stockMovement);
 
-		logger.info(this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName()
-				+ " stockMovement created: " + stockMovement);
+		log.info(" stockMovement created: " + stockMovement);
 		return stockMovement;
 	}
 
@@ -56,8 +54,7 @@ public class StockMovementBusiness extends BaseBusiness {
 		} else {
 			stockMovement.addItems(quantity);
 
-			logger.info(this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName()
-					+ " " + quantity + " items added to stockMovement: " + stockMovement);
+			log.info(quantity + " items added to stockMovement: " + stockMovement);
 		}
 
 		stockMovement = orderBusiness.checkAndCloseOrders(stockMovement);
@@ -83,8 +80,7 @@ public class StockMovementBusiness extends BaseBusiness {
 		} else if (stockMovement.getQuantity() == order.getQuantity()) {
 			delete(stockMovement.getId());
 
-			logger.info(this.getClass().getName() + "." + Thread.currentThread().getStackTrace()[1].getMethodName()
-					+ " stockMovement is closed: " + order);
+			log.info("stockMovement is closed: " + order);
 
 			return true;
 		}

@@ -14,7 +14,6 @@ import jakarta.persistence.PersistenceContext;
 @Component
 public class SessionFactory {
 
-
 	@PersistenceContext
 	private EntityManager entityManager;
 

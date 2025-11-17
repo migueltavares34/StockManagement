@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,11 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/stockaccess/user")
 public class UserController extends BaseController {
-
-	UserController() {
-		logger = LoggerFactory.getLogger(UserController.class);
-	}
-
+	
 	@Autowired
 	UserBusiness business;
 
