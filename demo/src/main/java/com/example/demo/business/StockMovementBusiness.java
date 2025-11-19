@@ -40,11 +40,6 @@ public class StockMovementBusiness extends BaseBusiness {
 		return stockMovement;
 	}
 
-	public StockMovement findStockMovementByItem(long Id) {
-		StockMovement stockMovement = StockMovement.builder().id(Id).build();
-		return dao.find(stockMovement);
-	}
-
 	@Transactional
 	public StockMovement add(Long itemId, Long quantity) {
 		StockMovement stockMovement = stockMovementRepositoryInterface.getStockMovementByItem(itemId);
@@ -61,12 +56,6 @@ public class StockMovementBusiness extends BaseBusiness {
 		return stockMovement.getQuantity() == 0 ? dao.delete(stockMovement) : dao.change(stockMovement);
 	}
 
-	public StockMovement delete(long id) {
-		StockMovement stockMovement = StockMovement.builder().id(id).build();
-		stockMovement = dao.delete(stockMovement);
-		return stockMovement;
-	}
-
 	public boolean orderCanBefulfilled(Order order) {
 
 		StockMovement stockMovement = stockMovementRepositoryInterface.getStockMovementByItem(order.getItem().getId());
@@ -78,7 +67,7 @@ public class StockMovementBusiness extends BaseBusiness {
 			change(stockMovement);
 			return true;
 		} else if (stockMovement.getQuantity() == order.getQuantity()) {
-			delete(stockMovement.getId());
+			delete(StockMovement.builder().id(stockMovement.getId()).build());
 
 			log.info("stockMovement is closed: " + order);
 
