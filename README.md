@@ -4,13 +4,13 @@ To start this API:
 
 Import project to eclipse IDE using 
 
-    JDK-17
+    JDK-1.8
     latest maven version for dependencies management
 	SpringTools
 Configure application.properties file:
 
-	SQL: host, username and password variables to your mail server account
-	SQL: url, username and password to your postgres server
+	email: host, username and password for email server account
+	SQL: url, username and password for postgres server
 	
 Run project as Spring Boot App
 
