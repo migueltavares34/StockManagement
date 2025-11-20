@@ -16,6 +16,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class Item extends BaseEntity {
 
-	@Column(unique = true)
+	@Column(unique = true, nullable = false)
 	String name;
 }

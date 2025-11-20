@@ -4,6 +4,7 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,9 +20,11 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class StockMovement extends BaseEntity {
 
+	@Column(nullable = false)
 	private Date creationDate;
 
 	@OneToOne
+	@JoinColumn( nullable = false)
 	private Item item;
 
 	@Column(nullable = false)

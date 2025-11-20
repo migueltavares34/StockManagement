@@ -8,18 +8,6 @@ import com.example.demo.model.StockMovement;
 @Repository
 public class StockMovementDao extends BaseDao{	
 
-	public StockMovement create(StockMovement stockMovement) {
-		return (StockMovement) presistEntity(stockMovement);
-	}
-
-	public StockMovement find(StockMovement stockMovement) {
-		return (StockMovement) findEntity(stockMovement);
-	}
-
-	public StockMovement add(StockMovement stockMovement) {
-		return (StockMovement) presistEntity(stockMovement);
-	}
-
 	public StockMovement change(StockMovement stockMovement) {
 		BaseEntity returnedEntity = findEntity(stockMovement);
 		((StockMovement) returnedEntity).setQuantity(stockMovement.getQuantity());

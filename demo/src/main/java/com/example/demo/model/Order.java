@@ -4,6 +4,7 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -24,12 +25,14 @@ public class Order extends BaseEntity {
 	private Date creationDate;
 
 	@ManyToOne
+	@JoinColumn(nullable = false)
 	private Item item;
 
 	@Column(nullable = false)
 	private Long quantity;
 
 	@ManyToOne
+	@JoinColumn(nullable = false)
 	private User user;
 
 }

@@ -16,6 +16,7 @@ import com.example.demo.repository.OrderDao;
 import com.example.demo.repository.OrderRepositoryInterface;
 import com.example.demo.utils.EmailService;
 
+import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -43,7 +44,7 @@ public class OrderBusiness extends BaseBusiness {
 
 	public BaseEntity create(Long userId, Long itemId, Long quantity) {
 
-		User user = (User) userBusiness.find(Item.builder().id(userId).build());
+		User user = (User) userBusiness.find(User.builder().id(userId).build());
 		Item item = (Item) itemBusiness.find(Item.builder().id(itemId).build());
 		Order order = Order.builder().user(user).item(item).quantity(quantity).creationDate(new Date()).build();
 
@@ -56,8 +57,13 @@ public class OrderBusiness extends BaseBusiness {
 			return order;
 		}
 
-		log.info(" order was created: " + order);
-		return dao.create(order);
+		order = (Order) dao.create(order);
+		
+		if (StringUtils.isNotEmpty(order.getErrorMessage())) {
+			log.info(" order was created: " + order);
+		}
+		
+		return order;
 	}
 
 	public StockMovement checkAndCloseOrders(StockMovement stockMovement) {
