@@ -57,7 +57,7 @@ public class StockMovementBusiness extends BaseBusiness {
 		StockMovement stockMovement = result.getFirst();
 		boolean stockMovementNotInDb = result.getSecond();
 
-		if (stockMovementNotInDb) {
+		if (stockMovementNotInDb && stockMovement.getQuantity() != 0) {
 
 			stockMovement = (StockMovement) create(stockMovement);
 			log.info("StockMovement was created in DB: " + stockMovement);
