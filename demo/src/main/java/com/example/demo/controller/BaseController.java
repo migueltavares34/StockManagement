@@ -18,7 +18,7 @@ abstract class BaseController {
 	@Qualifier("baseBusiness")
 	BaseBusiness business;
 
-	abstract public ResponseEntity<String> find(long id);
+	abstract public ResponseEntity<String> read(long id);
 
 	abstract public ResponseEntity<String> delete(long id);
 
@@ -32,7 +32,7 @@ abstract class BaseController {
 		return handleResult(entity, "Entity created");
 	}
 
-	public ResponseEntity<String> find(BaseEntity entity) {
+	public ResponseEntity<String> read(BaseEntity entity) {
 		try {
 			entity = business.find(entity);
 		} catch (Exception e) {
@@ -42,9 +42,9 @@ abstract class BaseController {
 		return handleResult(entity, "Entity found");
 	}
 
-	public ResponseEntity<String> change(BaseEntity entity) {
+	public ResponseEntity<String> update(BaseEntity entity) {
 		try {
-			entity = business.change(entity);
+			entity = business.update(entity);
 		} catch (Exception e) {
 			entity.setErrorMessage(e.getMessage());
 		}

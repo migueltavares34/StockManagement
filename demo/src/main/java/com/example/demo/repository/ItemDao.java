@@ -8,7 +8,7 @@ import com.example.demo.model.Item;
 @Repository
 public class ItemDao extends BaseDao {
 
-	public BaseEntity change(BaseEntity entity) {
+	public BaseEntity update(BaseEntity entity) {
 		BaseEntity returnedEntity = findEntity(entity);
 		((Item) returnedEntity).setName(((Item)entity).getName());
 		return (BaseEntity) changeEntity(returnedEntity);

@@ -3,10 +3,14 @@ package com.example.demo.business;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.EmailDTO;
+import com.example.demo.kafka.Consumers;
+import com.example.demo.kafka.Producers;
 import com.example.demo.model.BaseEntity;
 import com.example.demo.model.Item;
 import com.example.demo.model.Order;
@@ -42,6 +46,9 @@ public class OrderBusiness extends BaseBusiness {
 	@Autowired
 	EmailService emailService;
 
+	@Autowired
+	Consumers consumers;
+
 	public BaseEntity create(Long userId, Long itemId, Long quantity) {
 
 		User user = (User) userBusiness.find(User.builder().id(userId).build());
@@ -58,11 +65,11 @@ public class OrderBusiness extends BaseBusiness {
 		}
 
 		order = (Order) dao.create(order);
-		
+
 		if (StringUtils.isNotEmpty(order.getErrorMessage())) {
 			log.info(" order was created: " + order);
 		}
-		
+
 		return order;
 	}
 
@@ -85,13 +92,20 @@ public class OrderBusiness extends BaseBusiness {
 	}
 
 	private void closeOrder(Order order) {
-		sendEmail(order);
+		// sendEmail(order);
 		delete(order);
 		log.info(" order is fullfilled: " + order);
 	}
 
-	private void sendEmail(Order order) {
-		emailService.sendEmail(order.getUser().getEmail(), "Order completed",
-				"Your order for " + order.getQuantity() + " " + order.getItem().getName() + " is completed.");
+	public void sendEmail() {
+		ProducerRecord<String, EmailDTO> record = new ProducerRecord<>("my-first-topic", "key",
+				EmailDTO.builder().notificationType("email").to("mailparaomiguel@gmail.com").subject("Hello Kafka!")
+						.messageBody("KAfka funceminou!!").build());
+		// EmailDTO email = ;
+		Producers.sendMessage(record);
+	}
+
+	public void recieveOrderToSendEmail() {
+		consumers.receiveMessage();
 	}
 }

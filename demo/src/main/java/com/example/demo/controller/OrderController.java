@@ -18,8 +18,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "OrderController", description = "Orders management")
 @RestController
 @RequestMapping("/stockaccess/order")
-public class OrderController  extends BaseController{
-	
+public class OrderController extends BaseController {
+
 	@Autowired
 	OrderBusiness business;
 
@@ -38,14 +38,14 @@ public class OrderController  extends BaseController{
 
 	@Tag(name = "Find order")
 	@GetMapping("/find")
-	public ResponseEntity<String> find(@RequestParam long id) {
-		return find(Order.builder().id(id).build());
+	public ResponseEntity<String> read(@RequestParam long id) {
+		return read(Order.builder().id(id).build());
 	}
 
 	@Tag(name = "Change order")
 	@PutMapping("/change")
 	public ResponseEntity<String> change(@RequestParam long id, @RequestParam long quantity) {
-		return change(Order.builder().id(id).quantity(quantity).build());
+		return update(Order.builder().id(id).quantity(quantity).build());
 	}
 
 	@Tag(name = "Remove order")

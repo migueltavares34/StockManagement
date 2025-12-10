@@ -1,7 +1,6 @@
 package com.example.demo.business;
 
-import java.util.Date;
-
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.util.Pair;
@@ -30,18 +29,21 @@ public class StockMovementBusiness extends BaseBusiness {
 	@Autowired
 	OrderBusiness orderBusiness;
 
-	public StockMovement create(Long itemId, Long quantity) {
-		Item item = Item.builder().id(itemId).build();
-		StockMovement stockMovement = StockMovement.builder().item(item).quantity(quantity).creationDate(new Date())
-				.build();
-		stockMovement = (StockMovement) dao.create(stockMovement);
+	public StockMovement add(Long itemId, Long quantity) throws Exception {
 
-		log.info(" stockMovement created: " + stockMovement);
-		return stockMovement;
+		StockMovement stockMovement = stockMovementRepositoryInterface.getStockMovementByItem(itemId);
+		
+		if (ObjectUtils.isEmpty(stockMovement)) {
+			throw new Exception("There is still no Stock Movement for this item, please create one first");
+		}
+
+		stockMovement.addItems(quantity);
+
+		return dao.change(stockMovement);
 	}
 
 	@Transactional
-	public StockMovement add(Long itemId, Long quantity) {
+	public StockMovement fullfilladdOrCreate(Long itemId, Long quantity) {
 		Pair<StockMovement, Boolean> result = getStockMovementFromDbOrBuildNew(itemId, quantity);
 
 		StockMovement stockMovement = result.getFirst();
@@ -101,7 +103,7 @@ public class StockMovementBusiness extends BaseBusiness {
 			return false;
 		} else if (stockMovement.getQuantity() > order.getQuantity()) {
 			stockMovement.subtractItems(order.getQuantity());
-			change(stockMovement);
+			update(stockMovement);
 			return true;
 		} else if (stockMovement.getQuantity() == order.getQuantity()) {
 			delete(StockMovement.builder().id(stockMovement.getId()).build());

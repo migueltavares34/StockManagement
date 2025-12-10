@@ -28,7 +28,7 @@ public class BaseDao {
 		return deleteEntity(findEntity(entity));
 	}
 
-	public BaseEntity change(BaseEntity entity) {
+	public BaseEntity update(BaseEntity entity) {
 		return changeEntity(entity);
 	}
 

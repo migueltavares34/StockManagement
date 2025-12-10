@@ -22,8 +22,8 @@ public class BaseBusiness {
 		return baseDao.find(entity);
 	}
 
-	public BaseEntity change(BaseEntity entity) {
-		return baseDao.change(entity);
+	public BaseEntity update(BaseEntity entity) {
+		return baseDao.update(entity);
 	}
 
 	public BaseEntity delete(BaseEntity entity) {

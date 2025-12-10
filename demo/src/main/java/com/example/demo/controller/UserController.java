@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,12 +38,12 @@ public class UserController extends BaseController {
 
 	@Tag(name = "Find user")
 	@GetMapping("/find")
-	public ResponseEntity<String> find(@RequestParam long id) {
-		return find(User.builder().id(id).build());
+	public ResponseEntity<String> read(@RequestParam long id) {
+		return read(User.builder().id(id).build());
 	}
 
 	@Tag(name = "Change user")
-	@PutMapping("/change")
+	@PatchMapping("/change")
 	public ResponseEntity<String> change(@RequestParam long id, @RequestParam String email) {
 		User user = User.builder().build();
 		try {

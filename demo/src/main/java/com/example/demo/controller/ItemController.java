@@ -3,8 +3,8 @@ package com.example.demo.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,14 +26,14 @@ public class ItemController extends BaseController {
 
 	@Tag(name = "Find item")
 	@GetMapping("/find")
-	public ResponseEntity<String> find(@RequestParam long id) {
-		return find(Item.builder().id(id).build());
+	public ResponseEntity<String> read(@RequestParam long id) {
+		return read(Item.builder().id(id).build());
 	}
 
 	@Tag(name = "Change item")
-	@PutMapping("/change")
+	@PatchMapping("/change")
 	public ResponseEntity<String> change(@RequestParam long id, @RequestParam String name) {
-		return change(Item.builder().id(id).name(name).build());
+		return update(Item.builder().id(id).name(name).build());
 	}
 
 	@Tag(name = "Remove item")
