@@ -2,15 +2,14 @@ package com.example.demo.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.model.BaseEntity;
 import com.example.demo.model.StockMovement;
 
 @Repository
 public class StockMovementDao extends BaseDao{	
 
 	public StockMovement change(StockMovement stockMovement) {
-		BaseEntity returnedEntity = findEntity(stockMovement);
-		((StockMovement) returnedEntity).setQuantity(stockMovement.getQuantity());
+		StockMovement returnedEntity = (StockMovement) findEntity(stockMovement);
+		returnedEntity.setQuantity(stockMovement.getQuantity());
 		return (StockMovement) changeEntity(returnedEntity);
 	}
 

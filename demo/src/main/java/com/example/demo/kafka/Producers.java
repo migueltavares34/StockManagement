@@ -25,7 +25,7 @@ public class Producers {
 
 	static {
 		PRODUCER_PROPERTIES = new Properties();
-		PRODUCER_PROPERTIES.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "broker:9092");
+		PRODUCER_PROPERTIES.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 		PRODUCER_PROPERTIES.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 		PRODUCER_PROPERTIES.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, EmailSerializerMapper.class);
 	}
