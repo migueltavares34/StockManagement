@@ -3,7 +3,6 @@ package com.example.demo.business;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.function.Consumers;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,9 +44,6 @@ public class OrderBusiness extends BaseBusiness {
 
 	@Autowired
 	EmailService emailService;
-
-	@Autowired
-	Consumers consumers;
 
 	public BaseEntity create(Long userId, Long itemId, Long quantity) {
 
