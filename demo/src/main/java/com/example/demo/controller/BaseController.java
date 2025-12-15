@@ -18,61 +18,60 @@ abstract class BaseController {
 	@Qualifier("baseBusiness")
 	BaseBusiness business;
 
-	abstract public ResponseEntity<String> read(long id);
+	abstract public ResponseEntity<BaseEntity> read(long id);
 
-	abstract public ResponseEntity<String> delete(long id);
+	abstract public ResponseEntity<BaseEntity> delete(long id);
 
-	public ResponseEntity<String> create(BaseEntity entity) {
+	public ResponseEntity<BaseEntity> create(BaseEntity entity) {
 		try {
 			entity = business.create(entity);
 		} catch (Exception e) {
 			entity.setErrorMessage(e.getMessage());
 		}
 
-		return handleResult(entity, "Entity created");
+		return handleResult(entity);
 	}
 
-	public ResponseEntity<String> read(BaseEntity entity) {
+	public ResponseEntity<BaseEntity> read(BaseEntity entity) {
 		try {
 			entity = business.find(entity);
 		} catch (Exception e) {
 			entity.setErrorMessage(e.getMessage());
 		}
 
-		return handleResult(entity, "Entity found");
+		return handleResult(entity);
 	}
 
-	public ResponseEntity<String> update(BaseEntity entity) {
+	public ResponseEntity<BaseEntity> update(BaseEntity entity) {
 		try {
 			entity = business.update(entity);
 		} catch (Exception e) {
 			entity.setErrorMessage(e.getMessage());
 		}
 
-		return handleResult(entity, "Entity name changed");
+		return handleResult(entity);
 	}
 
-	public ResponseEntity<String> delete(BaseEntity entity) {
+	public ResponseEntity<BaseEntity> delete(BaseEntity entity) {
 		try {
 			entity = business.delete(entity);
 		} catch (Exception e) {
 			entity.setErrorMessage(e.getMessage());
 		}
-		return handleResult(entity, "Entity deleted");
+		return handleResult(entity);
 	}
 
-	protected ResponseEntity<String> handleResult(BaseEntity entity, String successMessage) {
+	protected ResponseEntity<BaseEntity> handleResult(BaseEntity entity) {
 
 		if (entity == null) {
 			log.error("Entity is null");
-			return new ResponseEntity<String>("Entity not found", HttpStatus.BAD_REQUEST);
+			entity = BaseEntity.builder().errorMessage("Entity not found").build();
+			return new ResponseEntity<BaseEntity>(entity, HttpStatus.BAD_REQUEST);
 
 		} else if (StringUtils.isNotBlank(entity.getErrorMessage())) {
 			log.error(entity.getErrorMessage());
-			return new ResponseEntity<String>(entity.getErrorMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<BaseEntity>(entity, HttpStatus.BAD_REQUEST);
 		}
-		successMessage = successMessage + ": " + entity.toString();
-		log.info(successMessage);
-		return new ResponseEntity<String>(successMessage, HttpStatus.CREATED);
+		return new ResponseEntity<BaseEntity>(entity, HttpStatus.CREATED);
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.dto.request.AddStockMovementRequest;
 import com.example.demo.model.Item;
 import com.example.demo.model.Order;
 import com.example.demo.model.StockMovement;
@@ -29,15 +30,15 @@ public class StockMovementBusiness extends BaseBusiness {
 	@Autowired
 	OrderBusiness orderBusiness;
 
-	public StockMovement add(Long itemId, Long quantity) throws Exception {
+	public StockMovement add(AddStockMovementRequest addStockMovementRequest) throws Exception {
 
-		StockMovement stockMovement = stockMovementRepositoryInterface.getStockMovementByItem(itemId);
+		StockMovement stockMovement = stockMovementRepositoryInterface.getStockMovementByItem(addStockMovementRequest.id());
 		
 		if (ObjectUtils.isEmpty(stockMovement)) {
 			throw new Exception("There is still no Stock Movement for this item, please create one first");
 		}
 
-		stockMovement.addItems(quantity);
+		stockMovement.addItems(addStockMovementRequest.quantity());
 
 		return dao.change(stockMovement);
 	}

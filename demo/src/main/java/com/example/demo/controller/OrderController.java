@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.business.OrderBusiness;
+import com.example.demo.model.BaseEntity;
 import com.example.demo.model.Order;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +26,7 @@ public class OrderController extends BaseController {
 
 	@Tag(name = "Create order", description = "Create order and if there is enugh stock of the item it will be closed immediately and stock movement's will be adjusted or removed if empty")
 	@PostMapping("/create")
-	public ResponseEntity<String> create(@RequestParam Long userId, Long itemId, Long quantity) {
+	public ResponseEntity<BaseEntity> create(@RequestParam Long userId, Long itemId, Long quantity) {
 		Order order = Order.builder().build();
 		try {
 			order = (Order) business.create(userId, itemId, quantity);
@@ -33,24 +34,21 @@ public class OrderController extends BaseController {
 			order.setErrorMessage(e.getMessage());
 		}
 
-		return handleResult(order, "Order created");
+		return handleResult(order);
 	}
 
-	@Tag(name = "Find order")
 	@GetMapping("/find")
-	public ResponseEntity<String> read(@RequestParam long id) {
+	public ResponseEntity<BaseEntity> read(@RequestParam long id) {
 		return read(Order.builder().id(id).build());
 	}
 
-	@Tag(name = "Change order")
 	@PutMapping("/change")
-	public ResponseEntity<String> change(@RequestParam long id, @RequestParam long quantity) {
+	public ResponseEntity<BaseEntity> change(@RequestParam long id, @RequestParam long quantity) {
 		return update(Order.builder().id(id).quantity(quantity).build());
 	}
 
-	@Tag(name = "Remove order")
 	@DeleteMapping("/delete")
-	public ResponseEntity<String> delete(@RequestParam long id) {
+	public ResponseEntity<BaseEntity> delete(@RequestParam long id) {
 		return delete(Order.builder().id(id).build());
 	}
 }

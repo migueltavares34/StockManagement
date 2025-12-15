@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.BaseEntity;
 import com.example.demo.model.Item;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,27 +19,23 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/stockaccess/item")
 public class ItemController extends BaseController {
 
-	@Tag(name = "Create item")
 	@PostMapping("/create")
-	public ResponseEntity<String> create(@RequestParam String name) {
+	public ResponseEntity<BaseEntity> create(@RequestParam String name) {
 		return create(Item.builder().name(name).build());
 	}
 
-	@Tag(name = "Find item")
 	@GetMapping("/find")
-	public ResponseEntity<String> read(@RequestParam long id) {
+	public ResponseEntity<BaseEntity> read(@RequestParam long id) {
 		return read(Item.builder().id(id).build());
 	}
 
-	@Tag(name = "Change item")
 	@PatchMapping("/change")
-	public ResponseEntity<String> change(@RequestParam long id, @RequestParam String name) {
+	public ResponseEntity<BaseEntity> change(@RequestParam long id, @RequestParam String name) {
 		return update(Item.builder().id(id).name(name).build());
 	}
 
-	@Tag(name = "Remove item")
 	@DeleteMapping("/delete")
-	public ResponseEntity<String> delete(@RequestParam long id) {
+	public ResponseEntity<BaseEntity> delete(@RequestParam long id) {
 		return delete(Item.builder().id(id).build());
 	}
 }

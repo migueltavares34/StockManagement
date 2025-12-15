@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.business.UserBusiness;
+import com.example.demo.model.BaseEntity;
 import com.example.demo.model.User;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,13 +20,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/stockaccess/user")
 public class UserController extends BaseController {
-	
+
 	@Autowired
 	UserBusiness business;
 
-	@Tag(name = "Create user")
 	@PostMapping("/create")
-	public ResponseEntity<String> create(@RequestParam String name, @RequestParam String email) {
+	public ResponseEntity<BaseEntity> create(@RequestParam String name, @RequestParam String email) {
 		User user = User.builder().build();
 		try {
 			user = business.create(name, email);
@@ -33,18 +33,16 @@ public class UserController extends BaseController {
 			user.setErrorMessage(e.getMessage());
 		}
 
-		return handleResult(user, "User created");
+		return handleResult(user);
 	}
 
-	@Tag(name = "Find user")
 	@GetMapping("/find")
-	public ResponseEntity<String> read(@RequestParam long id) {
+	public ResponseEntity<BaseEntity> read(@RequestParam long id) {
 		return read(User.builder().id(id).build());
 	}
 
-	@Tag(name = "Change user")
 	@PatchMapping("/change")
-	public ResponseEntity<String> change(@RequestParam long id, @RequestParam String email) {
+	public ResponseEntity<BaseEntity> change(@RequestParam long id, @RequestParam String email) {
 		User user = User.builder().build();
 		try {
 			user = business.change(id, email);
@@ -52,12 +50,11 @@ public class UserController extends BaseController {
 			user.setErrorMessage(e.getMessage());
 		}
 
-		return handleResult(user, "User email changed");
+		return handleResult(user);
 	}
 
-	@Tag(name = "Remove user")
 	@DeleteMapping("/delete")
-	public ResponseEntity<String> delete(@RequestParam long id) {
+	public ResponseEntity<BaseEntity> delete(@RequestParam long id) {
 		return delete(User.builder().id(id).build());
 	}
 }
