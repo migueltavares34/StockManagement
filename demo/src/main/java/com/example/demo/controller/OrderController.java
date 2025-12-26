@@ -15,6 +15,7 @@ import com.example.demo.model.BaseEntity;
 import com.example.demo.model.Order;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.security.RolesAllowed;
 
 @Tag(name = "OrderController", description = "Orders management")
 @RestController
@@ -42,11 +43,13 @@ public class OrderController extends BaseController {
 		return read(Order.builder().id(id).build());
 	}
 
+	@RolesAllowed({"ADMIN","SUPER_ADMIN"})
 	@PutMapping("/change")
 	public ResponseEntity<BaseEntity> change(@RequestParam long id, @RequestParam long quantity) {
 		return update(Order.builder().id(id).quantity(quantity).build());
 	}
 
+	@RolesAllowed({"ADMIN","SUPER_ADMIN"})
 	@DeleteMapping("/delete")
 	public ResponseEntity<BaseEntity> delete(@RequestParam long id) {
 		return delete(Order.builder().id(id).build());

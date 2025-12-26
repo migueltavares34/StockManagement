@@ -17,12 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.business.StockMovementBusiness;
-import com.example.demo.dto.request.AddStockMovementRequest;
 import com.example.demo.model.BaseEntity;
 import com.example.demo.model.Item;
 import com.example.demo.model.StockMovement;
+import com.example.demo.model.request.AddStockMovementRequest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.security.RolesAllowed;
 
 @Tag(name = "StockMovements", description = "Stock movements management")
 @RestController
@@ -55,6 +56,7 @@ public class StockMovementController extends BaseController {
 		return update(StockMovement.builder().id(id).quantity(quantity).build());
 	}
 
+	@RolesAllowed({"ADMIN","SUPER_ADMIN"})
 	@DeleteMapping("/delete")
 	public ResponseEntity<BaseEntity> delete(@RequestParam long id) {
 		return delete(StockMovement.builder().id(id).build());
@@ -81,7 +83,7 @@ public class StockMovementController extends BaseController {
 
 		StockMovement stockMovement = StockMovement.builder().build();
 		try {
-			stockMovement = business.fullfilladdOrCreate(itemId, quantity);
+			stockMovement = business.fullfillAddOrCreate(itemId, quantity);
 		} catch (Exception e) {
 			stockMovement.setErrorMessage(e.getClass().getName() + " " + e.getMessage());
 		}

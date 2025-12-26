@@ -7,10 +7,10 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.dto.request.AddStockMovementRequest;
 import com.example.demo.model.Item;
 import com.example.demo.model.Order;
 import com.example.demo.model.StockMovement;
+import com.example.demo.model.request.AddStockMovementRequest;
 import com.example.demo.repository.StockMovementDao;
 import com.example.demo.repository.StockMovementRepositoryInterface;
 
@@ -44,7 +44,7 @@ public class StockMovementBusiness extends BaseBusiness {
 	}
 
 	@Transactional
-	public StockMovement fullfilladdOrCreate(Long itemId, Long quantity) {
+	public StockMovement fullfillAddOrCreate(Long itemId, Long quantity) {
 		Pair<StockMovement, Boolean> result = getStockMovementFromDbOrBuildNew(itemId, quantity);
 
 		StockMovement stockMovement = result.getFirst();
@@ -55,7 +55,7 @@ public class StockMovementBusiness extends BaseBusiness {
 		return updateDb(result, stockMovementItemsQuantity);
 	}
 
-	private StockMovement updateDb(Pair<StockMovement, Boolean> result, Long stockMovementItemsQuantity) {
+	public StockMovement updateDb(Pair<StockMovement, Boolean> result, Long stockMovementItemsQuantity) {
 
 		StockMovement stockMovement = result.getFirst();
 		boolean stockMovementNotInDb = result.getSecond();

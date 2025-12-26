@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.EmailDTO;
 import com.example.demo.kafka.Producers;
 import com.example.demo.model.BaseEntity;
 import com.example.demo.model.Item;
 import com.example.demo.model.Order;
 import com.example.demo.model.StockMovement;
 import com.example.demo.model.User;
+import com.example.demo.model.dto.EmailDTO;
 import com.example.demo.repository.OrderDao;
 import com.example.demo.repository.OrderRepositoryInterface;
 import com.example.demo.utils.EmailService;

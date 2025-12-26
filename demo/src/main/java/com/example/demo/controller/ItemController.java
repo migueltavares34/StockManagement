@@ -13,6 +13,7 @@ import com.example.demo.model.BaseEntity;
 import com.example.demo.model.Item;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.security.RolesAllowed;
 
 @Tag(name = "ItemController", description = "Items management")
 @RestController
@@ -29,11 +30,14 @@ public class ItemController extends BaseController {
 		return read(Item.builder().id(id).build());
 	}
 
+
+	@RolesAllowed({"ADMIN","SUPER_ADMIN"})
 	@PatchMapping("/change")
 	public ResponseEntity<BaseEntity> change(@RequestParam long id, @RequestParam String name) {
 		return update(Item.builder().id(id).name(name).build());
 	}
 
+	@RolesAllowed({"ADMIN","SUPER_ADMIN"})
 	@DeleteMapping("/delete")
 	public ResponseEntity<BaseEntity> delete(@RequestParam long id) {
 		return delete(Item.builder().id(id).build());

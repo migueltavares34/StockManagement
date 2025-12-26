@@ -10,10 +10,10 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.serialization.StringSerializer;
 
-import com.example.demo.dto.EmailDTO;
+import com.example.demo.mapper.EmailSerializerMapper;
+import com.example.demo.model.dto.EmailDTO;
 
 import lombok.extern.slf4j.Slf4j;
-import mapper.EmailSerializerMapper;
 
 @Slf4j
 public class Producers {

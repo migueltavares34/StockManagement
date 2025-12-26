@@ -1,8 +1,8 @@
-package mapper;
+package com.example.demo.mapper;
 
 import org.apache.kafka.common.serialization.Serializer;
 
-import com.example.demo.dto.EmailDTO;
+import com.example.demo.model.dto.EmailDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class EmailSerializerMapper implements Serializer<EmailDTO> {
