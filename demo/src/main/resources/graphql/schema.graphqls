@@ -1,3 +1,16 @@
+type StockMovement {
+    id: ID!
+    creationDate: String!
+    item: Item!
+    quantity: String!
+}
+
+type Item {
+    id: ID!
+    name: String!
+}
+
+
 type Query {
-	hello : String
+	getAllStockMovements : [StockMovement]
 }

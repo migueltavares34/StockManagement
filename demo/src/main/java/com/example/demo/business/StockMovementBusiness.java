@@ -1,5 +1,7 @@
 package com.example.demo.business;
 
+import java.util.List;
+
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,8 +34,9 @@ public class StockMovementBusiness extends BaseBusiness {
 
 	public StockMovement add(AddStockMovementRequest addStockMovementRequest) throws Exception {
 
-		StockMovement stockMovement = stockMovementRepositoryInterface.getStockMovementByItem(addStockMovementRequest.id());
-		
+		StockMovement stockMovement = stockMovementRepositoryInterface
+				.getStockMovementByItem(addStockMovementRequest.id());
+
 		if (ObjectUtils.isEmpty(stockMovement)) {
 			throw new Exception("There is still no Stock Movement for this item, please create one first");
 		}
@@ -114,5 +117,9 @@ public class StockMovementBusiness extends BaseBusiness {
 			return true;
 		}
 		return false;
+	}
+
+	public List<StockMovement> getAllStockMovements() {
+		return stockMovementRepositoryInterface.findAll();
 	}
 }

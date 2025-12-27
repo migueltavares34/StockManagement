@@ -9,6 +9,5 @@ import com.example.demo.model.StockMovement;
 public interface StockMovementRepositoryInterface extends JpaRepository<StockMovement, Long> {
 	
 	@Query("SELECT mov FROM StockMovement mov WHERE mov.item.id = :id")
-	StockMovement getStockMovementByItem(@Param("id") Long id);
-	
+	StockMovement getStockMovementByItem(@Param("id") Long id);	
 }
