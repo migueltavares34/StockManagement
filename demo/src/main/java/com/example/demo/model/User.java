@@ -33,9 +33,9 @@ public class User extends BaseEntity implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	public User(CreateUserRequest createUserRequest) {
-		this.name = createUserRequest.getUserName();
-		this.email = createUserRequest.getEmail();
-		this.password = createUserRequest.getPassword();
+		this.name = createUserRequest.userName();
+		this.email = createUserRequest.email();
+		this.password = createUserRequest.password();
 	}
 
 	@Column(unique = true, nullable = false)
