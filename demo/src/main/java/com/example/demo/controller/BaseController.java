@@ -18,10 +18,6 @@ abstract class BaseController {
 	@Qualifier("baseBusiness")
 	BaseBusiness business;
 
-	abstract public ResponseEntity<BaseEntity> read(long id);
-
-	abstract public ResponseEntity<BaseEntity> delete(long id);
-
 	public ResponseEntity<BaseEntity> create(BaseEntity entity) {
 		try {
 			entity = business.create(entity);

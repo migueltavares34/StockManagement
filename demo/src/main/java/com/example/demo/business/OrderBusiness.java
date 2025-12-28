@@ -1,5 +1,6 @@
 package com.example.demo.business;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -100,5 +101,9 @@ public class OrderBusiness extends BaseBusiness {
 								+ order.getItem().getName() + " has been fullfilled.")
 						.build());
 		Producers.sendMessage(record);
+	}
+
+	public Collection<Order> getAllOrders() {
+		return orderRepositoryInterface.findAll();
 	}
 }

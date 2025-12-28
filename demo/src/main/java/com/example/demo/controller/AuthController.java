@@ -37,10 +37,9 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-		
+
 		return ResponseEntity.ok(new AuthResponse(authenticate(request)));
 	}
-
 
 	public String authenticate(AuthRequest authRequest) {
 		Authentication auth = autenticationManager

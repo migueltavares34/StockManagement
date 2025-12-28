@@ -1,5 +1,6 @@
 package com.example.demo.business;
 
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +9,20 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.UserDao;
+import com.example.demo.repository.UserRepositoryInterface;
 
 @Service
 @Qualifier("userBusiness")
 public class UserBusiness extends BaseBusiness {
 
+	private final UserRepositoryInterface userRepositoryInterface;
+
 	@Autowired
 	UserDao dao;
+
+	UserBusiness(UserRepositoryInterface userRepositoryInterface) {
+		this.userRepositoryInterface = userRepositoryInterface;
+	}
 
 	public User create(String name, String email) {
 		User appUser;
@@ -53,5 +61,9 @@ public class UserBusiness extends BaseBusiness {
 
 		// Check if email matches the pattern
 		return email != null && p.matcher(email).matches();
+	}
+
+	public Collection<User> getAllUsers() {
+		return userRepositoryInterface.findAll();
 	}
 }

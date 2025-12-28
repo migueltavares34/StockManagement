@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.business.OrderBusiness;
 import com.example.demo.model.BaseEntity;
 import com.example.demo.model.Order;
+import com.example.demo.model.request.CreateOrderRequest;
+import com.example.demo.model.request.UpdateOrderRequest;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
@@ -27,10 +30,11 @@ public class OrderController extends BaseController {
 
 	@Tag(name = "Create order", description = "Create order and if there is enugh stock of the item it will be closed immediately and stock movement's will be adjusted or removed if empty")
 	@PostMapping("/create")
-	public ResponseEntity<BaseEntity> create(@RequestParam Long userId, Long itemId, Long quantity) {
+	public ResponseEntity<BaseEntity> create(@RequestBody CreateOrderRequest createOrderRequest) {
 		Order order = Order.builder().build();
 		try {
-			order = (Order) business.create(userId, itemId, quantity);
+			order = (Order) business.create(createOrderRequest.userId(), createOrderRequest.itemId(),
+					createOrderRequest.quantity());
 		} catch (Exception e) {
 			order.setErrorMessage(e.getMessage());
 		}
@@ -38,18 +42,18 @@ public class OrderController extends BaseController {
 		return handleResult(order);
 	}
 
-	@GetMapping("/find")
+	@GetMapping("/read")
 	public ResponseEntity<BaseEntity> read(@RequestParam long id) {
 		return read(Order.builder().id(id).build());
 	}
 
-	@RolesAllowed({"ADMIN","SUPER_ADMIN"})
-	@PutMapping("/change")
-	public ResponseEntity<BaseEntity> change(@RequestParam long id, @RequestParam long quantity) {
-		return update(Order.builder().id(id).quantity(quantity).build());
+	@RolesAllowed({ "ADMIN", "SUPER_ADMIN" })
+	@PutMapping("/update")
+	public ResponseEntity<BaseEntity> update(@RequestBody UpdateOrderRequest updateOrderRequest) {
+		return update(Order.builder().id(updateOrderRequest.id()).quantity(updateOrderRequest.quantity()).build());
 	}
 
-	@RolesAllowed({"ADMIN","SUPER_ADMIN"})
+	@RolesAllowed({ "ADMIN", "SUPER_ADMIN" })
 	@DeleteMapping("/delete")
 	public ResponseEntity<BaseEntity> delete(@RequestParam long id) {
 		return delete(Order.builder().id(id).build());
