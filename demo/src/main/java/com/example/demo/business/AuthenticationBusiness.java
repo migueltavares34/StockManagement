@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.model.Role;
+import com.example.demo.model.RoleEnum;
 import com.example.demo.model.User;
+import com.example.demo.repository.RoleRepositoryInterface;
 import com.example.demo.repository.UserDao;
 import com.example.demo.repository.UserRepositoryInterface;
 
@@ -36,6 +40,9 @@ public class AuthenticationBusiness {
 	UserDao userDao;
 
 	@Autowired
+	RoleRepositoryInterface roleRepositoryInterface;
+
+	@Autowired
 	PasswordEncoder passwordEncoder;
 
 	@Value("${security.jwt.secret-key}")
@@ -46,8 +53,12 @@ public class AuthenticationBusiness {
 
 	public User signup(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-		return userDao.create(user);
+		Optional<Role> optionalRole = roleRepositoryInterface.findByName(RoleEnum.USER);
+		if (optionalRole.isPresent()) {
+			user.setRole(optionalRole.get());
+			return userDao.create(user);
+		}
+		return null;
 	}
 
 	public String extractUsername(String token) {
@@ -98,24 +109,18 @@ public class AuthenticationBusiness {
 	private Key getSignInKey() {
 		return Keys.hmacShaKeyFor(secretKey.getBytes());
 	}
-	
+
 	public List<GrantedAuthority> extractAuthorities(String token) {
-	    Claims claims = Jwts.parser()
-	        .setSigningKey(secretKey)
-	        .parseClaimsJws(token)
-	        .getBody();
+		Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
 
-	    // Example: roles claim is ["ROLE_USER", "ROLE_ADMIN"]
-	    List<String> roles = claims.get("roles", List.class);
+		// Example: roles claim is ["ROLE_USER", "ROLE_ADMIN"]
+		List<String> roles = claims.get("roles", List.class);
 
-	    if (roles == null) {
-	        return Collections.emptyList();
-	    }
+		if (roles == null) {
+			return Collections.emptyList();
+		}
 
-	    return roles.stream()
-	        .map(SimpleGrantedAuthority::new)
-	        .collect(Collectors.toList());
+		return roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 	}
-
 
 }

@@ -1,6 +1,8 @@
 package com.example.demo.business;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
@@ -16,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.example.demo.model.Item;
 import com.example.demo.model.Order;
 import com.example.demo.model.StockMovement;
+import com.example.demo.model.request.AddStockMovementRequest;
 import com.example.demo.repository.BaseDao;
 import com.example.demo.repository.StockMovementDao;
 import com.example.demo.repository.StockMovementRepositoryInterface;
@@ -43,11 +46,36 @@ public class StockMovementBusinessTest {
 	private BaseBusiness baseBusiness;
 
 	@Test
+	void testCanAddToExistingStockMovement() {
+		Item item = Item.builder().id(1L).build();
+		StockMovement stockMovement = StockMovement.builder().item(item).quantity(1L).build();
+		when(stockMovementRepositoryInterface.getStockMovementByItem(null)).thenReturn(stockMovement);
+
+		stockMovement.addItems(1L);
+		when(stockMovementDao.change(any())).thenReturn(stockMovement);
+
+		AddStockMovementRequest addStockMovementRequest = new AddStockMovementRequest(1L, 1L);
+
+		try {
+			assertTrue(business.add(addStockMovementRequest).getQuantity().equals(2L));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	void testThrowErrorWithNoExstingStockMovement() {
+		when(stockMovementRepositoryInterface.getStockMovementByItem(anyLong())).thenReturn(null);
+
+		assertThrows(Exception.class, () -> business.add(new AddStockMovementRequest(1L, 1L)));
+	}
+
+	@Test
 	void testOrderCanBefulfilledWithNoStock() {
 		when(stockMovementRepositoryInterface.getStockMovementByItem(anyLong())).thenReturn(null);
 		Item item = Item.builder().id(1L).build();
 		Order order = Order.builder().item(item).build();
-		assertThat(!business.orderCanBefulfilled(order));
+		assertFalse(business.orderCanBefulfilled(order));
 	}
 
 	@Test
@@ -59,7 +87,7 @@ public class StockMovementBusinessTest {
 		Item item = Item.builder().id(1L).build();
 		Order order = Order.builder().item(item).quantity(1L).build();
 
-		assertThat(business.orderCanBefulfilled(order));
+		assertTrue(business.orderCanBefulfilled(order));
 
 		verify(baseDao, times(1)).update(any(StockMovement.class));
 	}
@@ -73,7 +101,7 @@ public class StockMovementBusinessTest {
 		Item item = Item.builder().id(1L).build();
 		Order order = Order.builder().item(item).quantity(1L).build();
 
-		assertThat(business.orderCanBefulfilled(order));
+		assertTrue(business.orderCanBefulfilled(order));
 
 		verify(baseDao, times(1)).delete(any(StockMovement.class));
 	}
@@ -87,6 +115,6 @@ public class StockMovementBusinessTest {
 		Item item = Item.builder().id(1L).build();
 		Order order = Order.builder().item(item).quantity(2L).build();
 
-		assertThat(!business.orderCanBefulfilled(order));
+		assertFalse(business.orderCanBefulfilled(order));
 	}
 }

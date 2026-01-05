@@ -11,6 +11,5 @@ import com.example.demo.model.Order;
 public interface OrderRepositoryInterface extends JpaRepository<Order, Long> {
 	
 	@Query("SELECT o FROM Order o WHERE o.item.id = :id ORDER BY o.creationDate DESC")
-	List<Order> getOrdersByItem(@Param("id") Long id);
-	
+	List<Order> getOrdersByItem(@Param("id") Long id);	
 }
