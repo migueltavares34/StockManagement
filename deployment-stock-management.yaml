@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock-management
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: stock-management
+  template:
+    metadata:
+      labels:
+        app: stock-management
+    spec:
+      containers:
+        - name: stock-management
+          image: stock-management:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8181
